@@ -1,3 +1,7 @@
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile10`, function (sprite3, location2) {
+    game.gameOver(false)
+    sprites.destroy(sprite3)
+})
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     if (!(hero_main)) {
         return
@@ -9,37 +13,194 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile4`, function (sprite, location) {
     info.changeScoreBy(10)
+    current_level += 1
+    startlevel(1)
+})
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite4, otherSprite2) {
+    if (hero_main.bottom >= otherSprite2.bottom) {
+        console.log("overlap1 " + ("" + hero_main) + ("" + otherSprite2))
+        info.changeLifeBy(-1)
+        sprite4.sayText("\"ouch\"", 1000, true)
+        animation.runImageAnimation(
+        otherSprite2,
+        [img`
+            . . . . c c c c c c . . . . . . 
+            . . . c 6 7 7 7 7 6 c . . . . . 
+            . . c 7 7 7 7 7 7 7 7 c . . . . 
+            . c 6 7 7 7 7 7 7 7 7 6 c . . . 
+            . c 7 c 6 6 6 6 c 7 7 7 c . . . 
+            . f 7 6 f 6 6 f 6 7 7 7 f . . . 
+            . f 7 7 7 7 7 7 7 7 7 7 f . . . 
+            . . f 7 7 7 7 6 c 7 7 6 f c . . 
+            . . . f c c c c 7 7 6 f 7 7 c . 
+            . . c 7 2 7 7 7 6 c f 7 7 7 7 c 
+            . c 7 7 2 7 7 c f c 6 7 7 6 c c 
+            c 1 1 1 1 7 6 f c c 6 6 6 c . . 
+            f 1 1 1 1 1 6 6 c 6 6 6 6 f . . 
+            f 6 1 1 1 1 1 6 6 6 6 6 c f . . 
+            . f 6 1 1 1 1 1 1 6 6 6 f . . . 
+            . . c c c c c c c c c f . . . . 
+            `,img`
+            . . . c c c c c c . . . . . . . 
+            . . c 6 7 7 7 7 6 c . . . . . . 
+            . c 7 7 7 7 7 7 7 7 c . . . . . 
+            c 6 7 7 7 7 7 7 7 7 6 c . . . . 
+            c 7 c 6 6 6 6 c 7 7 7 c . . . . 
+            f 7 6 f 6 6 f 6 7 7 7 f . . . . 
+            f 7 7 7 7 7 7 7 7 7 7 f . . . . 
+            . f 7 7 7 7 6 c 7 7 6 f . . . . 
+            . . f c c c c 7 7 6 f c c c . . 
+            . . c 6 2 7 7 7 f c c 7 7 7 c . 
+            . c 6 7 7 2 7 7 c f 6 7 7 7 7 c 
+            . c 1 1 1 1 7 6 6 c 6 6 6 c c c 
+            . c 1 1 1 1 1 6 6 6 6 6 6 c . . 
+            . c 6 1 1 1 1 1 6 6 6 6 6 c . . 
+            . . c 6 1 1 1 1 1 7 6 6 c c . . 
+            . . . c c c c c c c c c c . . . 
+            `,img`
+            . . . . . c c c c c c c . . . . 
+            . . . . c 6 7 7 7 7 7 6 c . . . 
+            . . . c 7 c 6 6 6 6 c 7 6 c . . 
+            . . c 6 7 6 f 6 6 f 6 7 7 c . . 
+            . . c 7 7 7 7 7 7 7 7 7 7 c . . 
+            . . f 7 8 1 f f 1 6 7 7 7 f . . 
+            . . f 6 f 1 f f 1 f 7 7 7 f . . 
+            . . . f f 2 2 2 2 f 7 7 6 f . . 
+            . . c c f 2 2 2 2 7 7 6 f c . . 
+            . c 7 7 7 7 7 7 7 7 c c 7 7 c . 
+            c 7 1 1 1 7 7 7 7 f c 6 7 7 7 c 
+            f 1 1 1 1 1 7 6 f c c 6 6 6 c c 
+            f 1 1 1 1 1 1 6 6 c 6 6 6 c . . 
+            f 6 1 1 1 1 1 6 6 6 6 6 6 c . . 
+            . f 6 1 1 1 1 1 6 6 6 6 c . . . 
+            . . f f c c c c c c c c . . . . 
+            `,img`
+            . . . . . . c c c c c c c . . . 
+            . . . . . c f f 6 6 f f 7 c . . 
+            . . . . c 7 6 6 6 6 6 6 7 6 c . 
+            . . . c 7 7 7 7 7 7 7 7 7 7 c . 
+            . . . c 7 8 1 f f 1 6 7 7 7 c . 
+            . . . f 6 f 1 f f 1 f 7 7 7 f . 
+            . . . f 6 f 2 2 2 2 f 7 7 7 f . 
+            . . c c 6 f 2 2 2 2 f 7 7 6 f . 
+            . c 7 7 7 7 2 2 2 2 7 7 f c . . 
+            c 7 1 1 1 7 7 7 7 7 c c 7 7 c . 
+            f 1 1 1 1 1 7 7 7 f c 6 7 7 7 c 
+            f 1 1 1 1 1 1 6 f c c 6 6 6 c c 
+            f 6 1 1 1 1 1 6 6 c 6 6 6 c . . 
+            f 6 1 1 1 1 1 6 6 6 6 6 6 c . . 
+            . f 6 1 1 1 1 6 6 6 6 6 c . . . 
+            . . f f c c c c c c c c . . . . 
+            `,img`
+            . . . . . . c c c c c c c . . . 
+            . . . . . c f f 6 6 f f 7 c . . 
+            . . . . c 7 6 6 6 6 6 6 7 6 c . 
+            . . . c 7 7 7 7 7 7 7 7 7 7 c . 
+            . . . c 7 8 1 f f 1 6 7 7 7 c . 
+            . . . f 6 f 1 f f 1 f 7 7 7 f . 
+            . . . f 6 f 2 2 2 2 f 7 7 7 f . 
+            . . c c 6 f 2 2 2 2 f 7 7 6 f . 
+            . c 7 7 7 7 2 2 2 2 7 7 f c . . 
+            c 7 1 1 1 7 7 7 7 7 c c 7 7 c . 
+            f 1 1 1 1 1 7 7 7 f c 6 7 7 7 c 
+            f 1 1 1 1 1 1 6 f c c 6 6 6 c c 
+            f 6 1 1 1 1 1 6 6 c 6 6 6 c . . 
+            f 6 1 1 1 1 1 6 6 6 6 6 6 c . . 
+            . f 6 1 1 1 1 6 6 6 6 6 c . . . 
+            . . f f c c c c c c c c . . . . 
+            `,img`
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . c c c c c 
+            . . . . . . . . . c c 7 7 7 6 c 
+            . . . . . . . . c c 7 7 7 c c . 
+            . . . . . . . . c 6 7 7 c . . . 
+            . . . . . . . . c 6 6 6 c . . . 
+            . . . c c c c c c 6 6 6 c c . . 
+            . . c 6 7 7 7 7 6 c c 6 6 6 c . 
+            . c 7 7 7 7 7 7 7 7 c 6 6 6 c c 
+            c 6 7 7 7 7 7 7 7 7 6 c 6 6 6 c 
+            c 7 c 6 6 6 6 c 7 7 7 c 6 6 6 c 
+            f 7 c c 6 6 c c 7 7 7 f 6 6 6 c 
+            f 7 6 f 6 6 f 6 7 7 7 f 6 6 6 c 
+            . c 1 c f f 1 c 7 6 f 6 6 c c . 
+            . c c c c c c c c c c c c . . . 
+            `,img`
+            . . . . . . . . . . . c c c c c 
+            . . . . . . . . . c c 7 7 7 6 c 
+            . . . . . . . . c c 7 7 7 c c . 
+            . . . . . . . . c 6 7 7 c . . . 
+            . . . . . . . . c 6 6 6 c . . . 
+            . . . . . . . . c 6 6 6 c c . . 
+            . . . c c c c c c c 6 6 6 c c . 
+            . . c 6 7 7 7 7 6 c c 6 6 6 c . 
+            . c 7 7 7 7 7 7 7 7 c 6 6 6 c c 
+            c 6 7 7 7 7 7 7 7 7 6 c 6 6 6 c 
+            c 7 c 6 6 6 6 c 7 7 7 c 6 6 6 c 
+            f 7 c c 6 6 c c 7 7 7 f 6 6 6 c 
+            f 7 6 f 6 6 f 6 7 7 7 f 6 6 6 c 
+            . f 7 7 7 7 7 7 7 7 6 f 6 6 c . 
+            . c 1 c f f 1 c 7 6 f 6 6 c c . 
+            . c c c c c c c c c c c c . . . 
+            `],
+        100,
+        false
+        )
+        pause(700)
+        sprites.destroy(otherSprite2)
+    } else {
+        console.log("overlap2 " + ("" + hero_main) + " " + ("" + otherSprite2))
+        sprites.destroy(otherSprite2)
+        info.changeScoreBy(3)
+        music.play(music.createSong(hex`00780004080200`), music.PlaybackMode.UntilDone)
+        animation.runImageAnimation(
+        otherSprite2,
+        [img`
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . 6 6 6 6 6 6 6 6 6 6 6 6 . . 
+            . . 7 7 7 7 7 7 7 7 7 7 7 7 . . 
+            `],
+        2000,
+        false
+        )
+    }
+})
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite2, otherSprite) {
+    info.changeScoreBy(1)
+    sprites.destroy(otherSprite)
+    music.play(music.createSong(hex`00780004080200`), music.PlaybackMode.UntilDone)
 })
 function startlevel (difficulity: number) {
     info.setLife(3)
-    console.log("starting level " + difficulity)
-    hero_main = sprites.create(img`
-        . . . . . . f f f f f f . . . . 
-        . . . . f f e e e e f 2 f . . . 
-        . . . f f e e e e f 2 2 2 f . . 
-        . . . f e e e f f e e e e f . . 
-        . . . f f f f e e 2 2 2 2 e f . 
-        . . . f e 2 2 2 f f f f e 2 f . 
-        . . f f f f f f f e e e f f f . 
-        . . f f e 4 4 e b f 4 4 e e f . 
-        . . f e e 4 d 4 1 f d d e f . . 
-        . . . f e e e 4 d d d d f . . . 
-        . . . . f f e e 4 4 4 e f . . . 
-        . . . . . 4 d d e 2 2 2 f . . . 
-        . . . . . e d d e 2 2 2 f . . . 
-        . . . . . f e e f 4 5 5 f . . . 
-        . . . . . . f f f f f f . . . . 
-        . . . . . . . f f f . . . . . . 
-        `, SpriteKind.Player)
-    tiles.setCurrentTilemap(tilemap`level4`)
-    tiles.placeOnRandomTile(hero_main, assets.tile`myTile9`)
-    for (let value of tiles.getTilesByType(assets.tile`myTile9`)) {
-        tiles.setTileAt(value, assets.tile`transparency16`)
-    }
     controller.moveSprite(hero_main, 100, 0)
     scene.cameraFollowSprite(hero_main)
     hero_main.ay = 200
     jumpcount = 0
+    console.log("starting level " + ("" + difficulity))
+    if (current_level == 0) {
+        tiles.setCurrentTilemap(tilemap`level4`)
+    } else {
+        tiles.setCurrentTilemap(tilemap`level6`)
+        sprites.destroyAllSpritesOfKind(SpriteKind.Enemy)
+        sprites.destroyAllSpritesOfKind(SpriteKind.Food)
+    }
+    tiles.placeOnRandomTile(hero_main, assets.tile`myTile9`)
+    for (let value of tiles.getTilesByType(assets.tile`myTile9`)) {
+        tiles.setTileAt(value, assets.tile`transparency16`)
+    }
     for (let value2 of tiles.getTilesByType(assets.tile`myTile6`)) {
         coin = sprites.create(img`
             . . b b b b . . 
@@ -172,199 +333,11 @@ info.onLifeZero(function () {
     sprites.destroy(hero_main)
     game.gameOver(false)
 })
-sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite, otherSprite) {
-    info.changeScoreBy(1)
-    sprites.destroy(otherSprite)
-    music.play(music.createSong(hex`0078000408020100001c00010a006400f401640000040000000000000000000000000005000004060000000400012c`), music.PlaybackMode.UntilDone)
-})
-scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile10`, function (sprite, location) {
-    game.gameOver(false)
-    sprites.destroy(sprite)
-})
-sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
-    if (hero_main.bottom >= otherSprite.bottom) {
-        console.log("overlap1 " + hero_main + " " + otherSprite)
-        info.changeLifeBy(-1)
-        sprite.sayText("\"ouch\"", 1000, true)
-        animation.runImageAnimation(
-        otherSprite,
-        [img`
-            . . . . c c c c c c . . . . . . 
-            . . . c 6 7 7 7 7 6 c . . . . . 
-            . . c 7 7 7 7 7 7 7 7 c . . . . 
-            . c 6 7 7 7 7 7 7 7 7 6 c . . . 
-            . c 7 c 6 6 6 6 c 7 7 7 c . . . 
-            . f 7 6 f 6 6 f 6 7 7 7 f . . . 
-            . f 7 7 7 7 7 7 7 7 7 7 f . . . 
-            . . f 7 7 7 7 6 c 7 7 6 f c . . 
-            . . . f c c c c 7 7 6 f 7 7 c . 
-            . . c 7 2 7 7 7 6 c f 7 7 7 7 c 
-            . c 7 7 2 7 7 c f c 6 7 7 6 c c 
-            c 1 1 1 1 7 6 f c c 6 6 6 c . . 
-            f 1 1 1 1 1 6 6 c 6 6 6 6 f . . 
-            f 6 1 1 1 1 1 6 6 6 6 6 c f . . 
-            . f 6 1 1 1 1 1 1 6 6 6 f . . . 
-            . . c c c c c c c c c f . . . . 
-            `,img`
-            . . . c c c c c c . . . . . . . 
-            . . c 6 7 7 7 7 6 c . . . . . . 
-            . c 7 7 7 7 7 7 7 7 c . . . . . 
-            c 6 7 7 7 7 7 7 7 7 6 c . . . . 
-            c 7 c 6 6 6 6 c 7 7 7 c . . . . 
-            f 7 6 f 6 6 f 6 7 7 7 f . . . . 
-            f 7 7 7 7 7 7 7 7 7 7 f . . . . 
-            . f 7 7 7 7 6 c 7 7 6 f . . . . 
-            . . f c c c c 7 7 6 f c c c . . 
-            . . c 6 2 7 7 7 f c c 7 7 7 c . 
-            . c 6 7 7 2 7 7 c f 6 7 7 7 7 c 
-            . c 1 1 1 1 7 6 6 c 6 6 6 c c c 
-            . c 1 1 1 1 1 6 6 6 6 6 6 c . . 
-            . c 6 1 1 1 1 1 6 6 6 6 6 c . . 
-            . . c 6 1 1 1 1 1 7 6 6 c c . . 
-            . . . c c c c c c c c c c . . . 
-            `,img`
-            . . . . . c c c c c c c . . . . 
-            . . . . c 6 7 7 7 7 7 6 c . . . 
-            . . . c 7 c 6 6 6 6 c 7 6 c . . 
-            . . c 6 7 6 f 6 6 f 6 7 7 c . . 
-            . . c 7 7 7 7 7 7 7 7 7 7 c . . 
-            . . f 7 8 1 f f 1 6 7 7 7 f . . 
-            . . f 6 f 1 f f 1 f 7 7 7 f . . 
-            . . . f f 2 2 2 2 f 7 7 6 f . . 
-            . . c c f 2 2 2 2 7 7 6 f c . . 
-            . c 7 7 7 7 7 7 7 7 c c 7 7 c . 
-            c 7 1 1 1 7 7 7 7 f c 6 7 7 7 c 
-            f 1 1 1 1 1 7 6 f c c 6 6 6 c c 
-            f 1 1 1 1 1 1 6 6 c 6 6 6 c . . 
-            f 6 1 1 1 1 1 6 6 6 6 6 6 c . . 
-            . f 6 1 1 1 1 1 6 6 6 6 c . . . 
-            . . f f c c c c c c c c . . . . 
-            `,img`
-            . . . . . . c c c c c c c . . . 
-            . . . . . c f f 6 6 f f 7 c . . 
-            . . . . c 7 6 6 6 6 6 6 7 6 c . 
-            . . . c 7 7 7 7 7 7 7 7 7 7 c . 
-            . . . c 7 8 1 f f 1 6 7 7 7 c . 
-            . . . f 6 f 1 f f 1 f 7 7 7 f . 
-            . . . f 6 f 2 2 2 2 f 7 7 7 f . 
-            . . c c 6 f 2 2 2 2 f 7 7 6 f . 
-            . c 7 7 7 7 2 2 2 2 7 7 f c . . 
-            c 7 1 1 1 7 7 7 7 7 c c 7 7 c . 
-            f 1 1 1 1 1 7 7 7 f c 6 7 7 7 c 
-            f 1 1 1 1 1 1 6 f c c 6 6 6 c c 
-            f 6 1 1 1 1 1 6 6 c 6 6 6 c . . 
-            f 6 1 1 1 1 1 6 6 6 6 6 6 c . . 
-            . f 6 1 1 1 1 6 6 6 6 6 c . . . 
-            . . f f c c c c c c c c . . . . 
-            `,img`
-            . . . . . . c c c c c c c . . . 
-            . . . . . c f f 6 6 f f 7 c . . 
-            . . . . c 7 6 6 6 6 6 6 7 6 c . 
-            . . . c 7 7 7 7 7 7 7 7 7 7 c . 
-            . . . c 7 8 1 f f 1 6 7 7 7 c . 
-            . . . f 6 f 1 f f 1 f 7 7 7 f . 
-            . . . f 6 f 2 2 2 2 f 7 7 7 f . 
-            . . c c 6 f 2 2 2 2 f 7 7 6 f . 
-            . c 7 7 7 7 2 2 2 2 7 7 f c . . 
-            c 7 1 1 1 7 7 7 7 7 c c 7 7 c . 
-            f 1 1 1 1 1 7 7 7 f c 6 7 7 7 c 
-            f 1 1 1 1 1 1 6 f c c 6 6 6 c c 
-            f 6 1 1 1 1 1 6 6 c 6 6 6 c . . 
-            f 6 1 1 1 1 1 6 6 6 6 6 6 c . . 
-            . f 6 1 1 1 1 6 6 6 6 6 c . . . 
-            . . f f c c c c c c c c . . . . 
-            `,img`
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . c c c c c 
-            . . . . . . . . . c c 7 7 7 6 c 
-            . . . . . . . . c c 7 7 7 c c . 
-            . . . . . . . . c 6 7 7 c . . . 
-            . . . . . . . . c 6 6 6 c . . . 
-            . . . c c c c c c 6 6 6 c c . . 
-            . . c 6 7 7 7 7 6 c c 6 6 6 c . 
-            . c 7 7 7 7 7 7 7 7 c 6 6 6 c c 
-            c 6 7 7 7 7 7 7 7 7 6 c 6 6 6 c 
-            c 7 c 6 6 6 6 c 7 7 7 c 6 6 6 c 
-            f 7 c c 6 6 c c 7 7 7 f 6 6 6 c 
-            f 7 6 f 6 6 f 6 7 7 7 f 6 6 6 c 
-            . c 1 c f f 1 c 7 6 f 6 6 c c . 
-            . c c c c c c c c c c c c . . . 
-            `,img`
-            . . . . . . . . . . . c c c c c 
-            . . . . . . . . . c c 7 7 7 6 c 
-            . . . . . . . . c c 7 7 7 c c . 
-            . . . . . . . . c 6 7 7 c . . . 
-            . . . . . . . . c 6 6 6 c . . . 
-            . . . . . . . . c 6 6 6 c c . . 
-            . . . c c c c c c c 6 6 6 c c . 
-            . . c 6 7 7 7 7 6 c c 6 6 6 c . 
-            . c 7 7 7 7 7 7 7 7 c 6 6 6 c c 
-            c 6 7 7 7 7 7 7 7 7 6 c 6 6 6 c 
-            c 7 c 6 6 6 6 c 7 7 7 c 6 6 6 c 
-            f 7 c c 6 6 c c 7 7 7 f 6 6 6 c 
-            f 7 6 f 6 6 f 6 7 7 7 f 6 6 6 c 
-            . f 7 7 7 7 7 7 7 7 6 f 6 6 c . 
-            . c 1 c f f 1 c 7 6 f 6 6 c c . 
-            . c c c c c c c c c c c c . . . 
-            `],
-        100,
-        false
-        )
-        pause(700)
-        sprites.destroy(otherSprite)
-    } else {
-        console.log("overlap2 " + hero_main + " " + otherSprite)
-        sprites.destroy(otherSprite)
-        info.changeScoreBy(3)
-        music.play(music.createSong(hex`0078000408020101001c000f05001202c102c20100040500280000006400280003140006020004060000000400011d`), music.PlaybackMode.UntilDone)
-        animation.runImageAnimation(
-        otherSprite,
-        [img`
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . 6 6 6 6 6 6 6 6 6 6 6 6 . . 
-            . . 7 7 7 7 7 7 7 7 7 7 7 7 . . 
-            `],
-        2000,
-        false
-        )
-    }
-})
 let enemy_snake: Sprite = null
 let coin: Sprite = null
 let jumpcount = 0
 let hero_main: Sprite = null
-let hero_image = img`
-    . . . . . . f f f f f f . . . . 
-    . . . . f f e e e e f 2 f . . . 
-    . . . f f e e e e f 2 2 2 f . . 
-    . . . f e e e f f e e e e f . . 
-    . . . f f f f e e 2 2 2 2 e f . 
-    . . . f e 2 2 2 f f f f e 2 f . 
-    . . f f f f f f f e e e f f f . 
-    . . f f e 4 4 e b f 4 4 e e f . 
-    . . f e e 4 d 4 1 f d d e f . . 
-    . . . f e e e 4 d d d d f . . . 
-    . . . . f f e e 4 4 4 e f . . . 
-    . . . . . 4 d d e 2 2 2 f . . . 
-    . . . . . e d d e 2 2 2 f . . . 
-    . . . . . f e e f 4 5 5 f . . . 
-    . . . . . . f f f f f f . . . . 
-    . . . . . . . f f f . . . . . . 
-    `
+let current_level = 0
 scene.setBackgroundColor(9)
 scene.setBackgroundImage(img`
     9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
@@ -488,14 +461,47 @@ scene.setBackgroundImage(img`
     8888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888
     8888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888
     `)
-startlevel(5)
+startlevel(1)
+current_level = 0
+hero_main = sprites.create(img`
+    . . . . . . f f f f f f . . . . 
+    . . . . f f e e e e f 2 f . . . 
+    . . . f f e e e e f 2 2 2 f . . 
+    . . . f e e e f f e e e e f . . 
+    . . . f f f f e e 2 2 2 2 e f . 
+    . . . f e 2 2 2 f f f f e 2 f . 
+    . . f f f f f f f e e e f f f . 
+    . . f f e 4 4 e b f 4 4 e e f . 
+    . . f e e 4 d 4 1 f d d e f . . 
+    . . . f e e e 4 d d d d f . . . 
+    . . . . f f e e 4 4 4 e f . . . 
+    . . . . . 4 d d e 2 2 2 f . . . 
+    . . . . . e d d e 2 2 2 f . . . 
+    . . . . . f e e f 4 5 5 f . . . 
+    . . . . . . f f f f f f . . . . 
+    . . . . . . . f f f . . . . . . 
+    `, SpriteKind.Player)
 game.onUpdate(function () {
-    // very ineficient, will drain console battery fast
-    if (hero_main) {
-        hero_main.setImage(hero_image)
-        if (hero_main.vx < 0) {
-            hero_main.image.flipX()
-        }
+    hero_main.setImage(img`
+        . . . . . . f f f f f f . . . . 
+        . . . . f f e e e e f 2 f . . . 
+        . . . f f e e e e f 2 2 2 f . . 
+        . . . f e e e f f e e e e f . . 
+        . . . f f f f e e 2 2 2 2 e f . 
+        . . . f e 2 2 2 f f f f e 2 f . 
+        . . f f f f f f f e e e f f f . 
+        . . f f e 4 4 e b f 4 4 e e f . 
+        . . f e e 4 d 4 1 f d d e f . . 
+        . . . f e e e 4 d d d d f . . . 
+        . . . . f f e e 4 4 4 e f . . . 
+        . . . . . 4 d d e 2 2 2 f . . . 
+        . . . . . e d d e 2 2 2 f . . . 
+        . . . . . f e e f 4 5 5 f . . . 
+        . . . . . . f f f f f f . . . . 
+        . . . . . . . f f f . . . . . . 
+        `)
+    if (hero_main.vx < 0) {
+        hero_main.image.flipX()
     }
 })
 // TODO: optimize, this is not efficient
